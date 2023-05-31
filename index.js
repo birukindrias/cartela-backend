@@ -5,7 +5,7 @@ const cors = require('cors');
 
 let outerArray = [];
 
-for (let i = 1; i <= 100; i += 5) {
+for (let i = 0; i <= 99; i += 5) {
     let innerArray = [];
     for (let j = i; j < i + 5; j++) {
         innerArray.push(j);
@@ -22,6 +22,9 @@ const io = require('socket.io')(server, {
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
+    io.emit('array', {
+        array:outerArray,
+    });
     console.log('User connected:', socket.id);
 
     socket.on('join', (room) => {

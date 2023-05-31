@@ -8,6 +8,6 @@
         "socket.io": "^4.6.1"
     },
     "scripts": {
-        "start": "nodemon idex.js"
+        "s": "nodemon idex.js"
     }
 }
