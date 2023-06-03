@@ -1,8 +1,12 @@
 const socket = io('ws://localhost:3000');
 
+// function joinRoom() {
+//     const room = document.querySelector('.room').innerHTML;
+//     socket.emit('jocin', room);
+// }
 function joinRoom() {
     const room = document.querySelector('.room').innerHTML;
-    socket.emit('jocin', room);
+    socket.emit('join', room);
 }
 let winneri = 0;
 let outerArray = [];
@@ -19,6 +23,35 @@ for (let i = 0; i <= 99; i += 5) {
 (() => {
     joinRoom()
 })()
+
+let foundElement = null;
+
+setInterval(() => {
+    outerArray.forEach((innerArray, rowIndex) => {
+        console.log([...innerArray]);
+        const string = array.join(", ");
+
+        innerArray.forEach((element, columnIndex) => {
+            console.log([...innerArray]);
+            if (gamearray.includes(element)) {
+                foundElement = { element, rowIndex, columnIndex };
+            }
+        });
+    });
+
+    if (foundElement) {
+        const { element, rowIndex, columnIndex } = foundElement;
+
+        const cell = document.querySelector(`#${element}`);
+        cell.style.color = 'yellow';
+        console.log(`Found element ${element} at [${rowIndex}, ${columnIndex}].`);
+    } else {
+        console.log('No element from outerArray is found in gameArray.');
+    }
+}, 200);
+
+
+
 
 function displayNewArrayInGridView(array) {
     const grid = document.getElementById("grid");

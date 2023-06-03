@@ -61,6 +61,7 @@ io.on('connection', (socket) => {
     socket.on('join', (room) => {
         socket.join(room);
         console.log('User', socket.id, 'joined room:', room);
+        
     });
 
     socket.on('winner', (winner) => {

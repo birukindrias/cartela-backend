@@ -150,7 +150,9 @@
                 .then(response => response.json())
                 .then(data => {
                     // Handle the response from the API
-                    console.log(data);
+                    console.log(data.id);
+                    sessionStorage.setItem('id',data.id)
+
                 })
                 .catch(error => {
                     // Handle any errors that occurred during the fetch request
@@ -163,6 +165,18 @@
             alreadyHaveAccountLink.addEventListener("click", showLoginForm);
         }
 
+        function checkSessionStorage() {
+            if (!sessionStorage.getItem('id')) {
+                // Add the 'grid-containerip' class to the body element
+                document.body.classList.add('grid-containerip');
+            } else {
+                location.href = '/game.php'
+            }
+        }
+
+        setInterval(checkSessionStorage, 1000);
+        // socket.on('array', ({ array }) => {
+        // });
         function login() {
             const username = document.getElementById("login-username").value;
             const password = document.getElementById("login-password").value;
@@ -224,6 +238,19 @@
             }, 3000);
         }
 
+        // function checkSessionStorage() {
+        //     if (sessionStorage.getItem('id')) {
+        //         document.getElementById('loginForm').style.display = 'none';
+        //         document.querySelector('.grid-containerip').style.display = 'grid';
+        //         document.getElementById('logoutButton').style.display = 'grid';
+        //         // document.body.classList.add('.grid-containerip');
+        //         // document.body.classList.getElementById('logoutButton');
+        //     } else {
+        //         document.getElementById('loginForm').style.display = 'block';
+        //         document.querySelector('.grid-containerip').style.display = 'none';
+        //         document.getElementById('logoutButton').style.display = 'none';
+        //     }
+        // }
         // function validatePhoneNumber(phoneNumber) {
         //     // Dummy phone number validation
         //     const regex = /^\d{10}$/;
