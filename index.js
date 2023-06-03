@@ -3,9 +3,40 @@ const app = express();
 const server = require('http').createServer(app);
 const cors = require('cors');
 
+
+
+
+
+// click send to back and saved 
+// buttons destroyed after cickes  
+// on 20 winner announced 
+// game refreshed 
+// to desable 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let outerArray = [];
 
-for (let i = 0; i <= 99; i += 5) {
+for (let i = 1; i <= 100; i += 5) {
     let innerArray = [];
     for (let j = i; j < i + 5; j++) {
         innerArray.push(j);
@@ -30,6 +61,11 @@ io.on('connection', (socket) => {
     socket.on('join', (room) => {
         socket.join(room);
         console.log('User', socket.id, 'joined room:', room);
+    });
+
+    socket.on('winner', (winner) => {
+        // socket.join(room);
+        console.log('User', 'joined room:', winner);
     });
 
     socket.on('message', ({ room, message }) => {

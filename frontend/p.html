@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Choose Payment Method</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+        }
+
+        .button {
+            width: 100px;
+            height: 40px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.logo-container img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Method</h1>
+        <div class="logo-container">
+            <img src="telebirr-logo.png" alt="Telebirr Logo">
+            <img src="chapa-logo.png" alt="Chapa Logo">
+        </div>
+    </div>
+
+    <div class="container">
+        <img class="logo"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/TeleBirr_Logo.svg/1200px-TeleBirr_Logo.svg.png"
+            alt="Telebirr Logo">
+        <button class="button">Telebirr</button>
+        <img class="logo"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Chapa_logo.svg/1200px-Chapa_logo.svg.png"
+            alt="Chapa Logo">
+        <button class="button">Chapa</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<style>
+    body {
+        background-color: #ffffff;
+        font-family: sans-serif;
+        font-size: 16px;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #ccc;
+        text-align: center;
+        font-size: 24px;
+        color: #fff;
+    }
+
+    .winner {
+        background-color: #000;
+        color: #fff;
+    }
+</style>
+
+<div class="container">
+    <div class="number" data-number="0"></div>
+    <div class="number" data-number="1"></div>
+    <div class="number" data-number="2"></div>
+    <div class="number" data-number="3"></div>
+    <div class="number" data-number="4"></div>
+    <div class="number" data-number="5"></div>
+    <div class="number" data-number="6"></div>
+    <div class="number" data-number="7"></div>
+    <div class="number" data-number="8"></div>
+    <div class="number" data-number="9"></div>
+</div>
+
+<script>
+    function randomNumber() {
+        return Math.floor(Math.random() * 10);
+    }
+
+    $('.number').each(function () {
+        var number = $(this).data('number');
+        $(this).text(number);
+    });
+
+    setInterval(function () {
+        var winner = randomNumber();
+        $('.number[data-number="' + winner + '"]').addClass('winner');
+    }, 1000);
+</script>
