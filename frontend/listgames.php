@@ -21,12 +21,24 @@
         foreach ($rooms as $room) {
         ?>
             <div class="room-number">
-                <a href="game.php?room=<?php echo $room; ?>"><?php echo $room; ?>ETB</a>
+                <a href="game.php?room=<?php echo $room; ?>&type=<?=$_GET['type']??'user'?>"><?php echo $room; ?>ETB</a>
             </div>
         <?php
         }
         ?>
     </div>
+    <div class="type" hidden>
+        <?php echo $_GET['type'] ?? 'user'; ?></div>
+    <div class="full-">
+        <?php if ($_GET['type'] ?? 'user' != 'user') {
+            return;
+        }
+        include_once './i.php'; ?></div>
+
+    asdfsad
+
+    <script>
+    </script>
     <!-- <div id="app">
         <input type="text" id="room" placeholder="Enter room">
         <button onclick="joinRoom()">Join Room</button>

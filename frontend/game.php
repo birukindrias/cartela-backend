@@ -12,13 +12,26 @@
 </head>
 
 <body>
+    <img src="http://localhost:8084/assets/box.jpg" id='myImage' class="rotate-image" alt="Rotated Image">
+
     <div class="container">
-        <div class="winner">Winner: </div>
+        <!-- <div class="winner">: </div> -->
 
         <div id="grid"></div>
 
     </div>
     <div class="room" hidden><?= $_GET['room'] ?></div>
+
+    <div class="type" hidden>
+        <?php echo $_GET['type']; ?>
+    </div>
+    <div class="profile">
+        <?php if ($_GET['type'] != 'user') {
+            return;
+        }
+        include_once './i.php'; ?>
+    </div>
+
     <!-- <div id="app">
         <input type="text" id="room" placeholder="Enter room">
         <button onclick="joinRoom()">Join Room</button>

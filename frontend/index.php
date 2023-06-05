@@ -2,19 +2,28 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="./style.css" />
+    <!-- <link rel="stylesheet" href="./style.css" /> -->
 
     <title>Login and Signup Page</title>
     <style>
         /* CSS for the form */
-        body {
-            background-color: #000;
-            color: #fff;
+        * {
+            /* color: #fff; */
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
         }
 
+        body {
+            background-color: #000;
+
+            /* background: black url('http://localhost:8084/assets/bigbg.jpg'); */
+
+        }
 
         .form-container {
-            width: 300px;
+            width: 88%;
+            /* max-width: 100%; */
             margin: 0 auto;
             padding: 20px;
             background-color: #000;
@@ -31,9 +40,9 @@
 
         /* CSS for the form inputs */
         .form-container input {
-            width: 92%;
+            width: 88%;
             margin-bottom: 10px;
-            padding: 10px;
+            padding: 20px;
             background-color: #fff;
             border: 2px solid #000;
             border-radius: 5px;
@@ -44,7 +53,6 @@
         .form-container button {
             width: 100%;
             padding: 10px;
-            padding-right: 20px;
             background-color: #ff0;
             border: none;
             color: #000;
@@ -59,6 +67,23 @@
             color: #f00;
             margin-bottom: 10px;
         }
+
+        /* Media queries for responsive design */
+        /* @media only screen and (min-width: 382px) {
+            .form-container {
+                width: 300px;
+            }
+
+            .form-container input {
+                width: 92%;
+            }
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .form-container {
+                width: 500px;
+            }
+        } */
     </style>
 </head>
 
@@ -84,6 +109,17 @@
 
     </div>
 
+    <div class="type" hidden>
+        <?php echo $_GET['type'] ?? 'user'
+        ?> </div>
+    <div class="profile">
+        <?php if ($_GET['type'] ?? 'user' != 'user') {
+            header('location: /listgames.php?&type=' . $_GET['type'] ?? 'user');
+
+            return;
+        }
+        ?>
+    </div>
     <script>
         // JavaScript code
         function showSignupForm() {
@@ -130,10 +166,13 @@
             // document.querySelector('.loginin').onclick = (e => {
             // Get the form values
             // e.preventDefault();
+            sessionStorage.setItem('id', '5')
+            location.href = '/listgames.php?type=user'
+            return
             const signupUrl = 'http://localhost:8084/api/register'; // Replace with your actual API endpoint
 
             const signupData = {
-
+                'type': 'user',
                 'username': document.getElementById("signup-username").value,
                 'password': document.getElementById("signup-password").value,
                 'phoneNumber': document.getElementById("signup-phone").value,
@@ -155,6 +194,8 @@
                     console.log(data.id);
                     sessionStorage.setItem('id', data.id)
 
+
+
                 })
                 .catch(error => {
                     // Handle any errors that occurred during the fetch request
@@ -168,11 +209,12 @@
         }
 
         function checkSessionStorage() {
+
             if (!sessionStorage.getItem('id')) {
                 // Add the 'grid-containerip' class to the body element
                 document.body.classList.add('grid-containerip');
             } else {
-                location.href = '/game.php'
+                location.href = '/listgames.php?type=user'
             }
         }
 
@@ -197,6 +239,7 @@
             const signupUrl = 'http://localhost:8084/api/login'; // Replace with your actual API endpoint
 
             const signupData = {
+                'type': 'user',
 
                 'username': document.getElementById("login-username").value,
                 'password': document.getElementById("login-password").value,

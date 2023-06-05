@@ -1,81 +1,222 @@
 const socket = io('ws://localhost:3000');
+let game_winner = 0;
+let numbers_array = [];
+let foundElement = null;
+let current_game_array = [];
+const rooms = document.querySelector('.room').innerHTML;
+const type = document.querySelector('.type').innerHTML;
+let room = (rooms.trim() + type.trim()).trim();
 
-// function joinRoom() {
-//     const room = document.querySelector('.room').innerHTML;
-//     socket.emit('jocin', room);
-// }
-function joinRoom() {
-    const room = document.querySelector('.room').innerHTML;
-    socket.emit('join', room);
-}
-let winneri = 0;
-let outerArray = [];
-let gamearray = [];
-let rooms = [10, 20, 30, 40];
-
+// numbers_array
 for (let i = 0; i <= 99; i += 5) {
     let innerArray = [];
     for (let j = i; j < i + 5; j++) {
         innerArray.push(j);
     }
-    outerArray.push(innerArray);
+    numbers_array.push(innerArray);
 }
+
+// join socket
+
+
 (() => {
-    joinRoom()
-})()
-
-let foundElement = null;
-
-setInterval(() => {
-    outerArray.forEach((innerArray, rowIndex) => {
-        console.log([...innerArray]);
-        const string = array.join(", ");
-
-        innerArray.forEach((element, columnIndex) => {
-            console.log([...innerArray]);
-            if (gamearray.includes(element)) {
-                foundElement = { element, rowIndex, columnIndex };
-            }
-        });
+    socket.emit('join', room);
+    socket.emit('game_array', room);
+    socket.on('game_array', ({ game_array }) => {
+        current_game_array = game_array
+        // console.log(game_array);
     });
+    // display array numbers
 
-    if (foundElement) {
-        const { element, rowIndex, columnIndex } = foundElement;
+    const grid = document.getElementById("grid");
+    let new_array = []
+    for (let i = 0; i < numbers_array.length; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < numbers_array[i].length; j++) {
+            row.textContent += numbers_array[i][j] + ',';
+            new_array.push(numbers_array[i][j])
+        }
 
-        const cell = document.querySelector(`#${element}`);
-        cell.style.color = 'yellow';
-        console.log(`Found element ${element} at [${rowIndex}, ${columnIndex}].`);
-    } else {
-        console.log('No element from outerArray is found in gameArray.');
+        row.setAttribute('id', new_array)
+        row.setAttribute('style', "transform: rotate(20deg)")
+        row.setAttribute('class', 'cope  hide')
+        // row.setAttribute('class', '')
+
+        new_array = []
+        grid.appendChild(row);
+    }
+})();
+socket.on('winner', ({ game_winner }) => {
+    // alert ('asdfadf')
+    var image = document.getElementById('myImage');
+    document.getElementById('myImage').style.display = 'block'
+        ;
+    var rotationInterval = setInterval(function () {
+        image.classList.toggle('rotate-image');
+    }, 3000);
+
+    // current_game_array = game_array
+    setTimeout(function () {
+        clearInterval(rotationInterval);
+    }, 10000);
+    setTimeout(function () {
+        const gridElement = document.getElementById("grid");
+        gridElement.innerHTML = '';
+        const trElement = document.createElement("tr");
+        const hide = document.querySelectorAll(".hide");
+        trElement.id = game_winner;
+        trElement.classList.add("cope");
+        hide.forEach(e => {
+            e.classList.add("hiddens");
+
+        });
+        trElement.innerHTML = game_winner;
+
+        console.log("The random winner is:", game_winner);
+        current_game_array = []
+        console.log('current_game_array');
+        gridElement.appendChild(trElement);
+        console.log(game_winner);
+    }, 10000);
+
+
+    // console.log(current_game_array);
+
+    // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
+
+});
+
+socket.on('game_winner', ({ game_winner }) => {
+    // current_game_array = game_array
+    console.log(game_winner);
+});
+setInterval(() => {
+    if (current_game_array.length == numbers_array.length
+    ) {
+        current_game_array = []
+        // sessionStorage.setItem(`${room}room`, JSON.stringify([]));
+        return
+    }
+    if (current_game_array.length != numbers_array.length
+    ) {
+        numbers_array.forEach((innerArray, rowIndex) => {
+
+            innerArray.forEach((elemeent, columnIndex) => {
+                // console.log(JSON.parse(sessionStorage.getItem(`${r/oom}room`)));
+                if (current_game_array.includes(innerArray.join(',') + ',')) {
+
+                    const element = innerArray.join(",");
+                    document.getElementById(`${element}`).style.color = 'brown'
+                    document.getElementById(`${element}`).style.backgroundColor = 'blue'
+                    foundElement = { element, rowIndex, columnIndex };
+                }
+            });
+        });
+
+        if (foundElement) {
+            const { element, rowIndex, columnIndex } = foundElement;
+
+            const cell = document.getElementById(`${element}`);
+            cell.style.color = 'yellow';
+            // console.log(`Found element ${element} at [${rowIndex}, ${columnIndex}].`);
+        } else {
+            // console.log('No element from numbers_array is found in current_game_Array.');
+        }
+    }
+}, 200);
+
+// display in class
+document.querySelectorAll('.cope').forEach(el => {
+    if (current_game_array.length != numbers_array.length
+    ) {
+
+        el.addEventListener('click', (e) => {
+            if (!current_game_array.includes(e.target.innerHTML)) {
+                current_game_array.push(e.target.innerHTML)
+                // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
+                sendMessage(e.target.innerHTML)
+                const number = e.target.innerHTML;
+                e.target.style.color = 'brown'
+                e.target.style.backgroundColor = 'blue'
+                e.target.style.fontWeight = 'light';
+                e.target.setAttribute('disabled', '')
+                // console.log(current_game_array.length);
+                // console.log(numbers_array.length);
+                return
+            }
+
+
+        })
+    }
+});
+
+// send winner 
+function winner() {
+
+
+    if (current_game_array.length == numbers_array.length) {
+        console.log('current_game_array');
+
+        const randomRowIndex = Math.floor(Math.random() * current_game_array.length);
+        game_winner = current_game_array[randomRowIndex];
+        const gridElement = document.getElementById("grid");
+        gridElement.innerHTML = '';
+        const trElement = document.createElement("tr");
+        const hide = document.querySelectorAll(".hide");
+        trElement.id = game_winner;
+        trElement.classList.add("cope");
+        hide.forEach(e => {
+            e.classList.add("hiddens");
+
+        });
+        trElement.innerHTML = game_winner;
+
+        console.log("The random winner is:", game_winner);
+        current_game_array = []
+        console.log('current_game_array');
+        // console.log(current_game_array);
+
+        // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
+        gridElement.appendChild(trElement);
+        socket.emit('winner', { room, winner: game_winner })
+
+        // location.href = '/listgames.php'
+        // console.log('winner', game_winner)
+        return
+    }
+    console.log('current_game_array');
+    // console.log(current_game_array);
+    // console.log(numbers_array);
+
+}
+setInterval(() => {
+    // console.log('ya');
+    // const lengtho = current_game_array.reduce((prev, curr) => {
+    //     const values = curr.split(",");
+    //     return prev + values.length;
+    // }, 0);
+    // console.log(lengtho);
+    // console.log('lengtho');
+    // console.log(current_game_array.length);
+    // console.log(numbers_array.length);
+    if (current_game_array.length == numbers_array.length
+    ) {
+        console.log(current_game_array.length);
+        console.log(numbers_array.length);
+        console.log('yaaa');
+
+        winner()
+
+        return
     }
 }, 200);
 
 
 
 
-function displayNewArrayInGridView(array) {
-    const grid = document.getElementById("grid");
-    let arrc = []
-    for (let i = 0; i < array.length; i++) {
-        const row = document.createElement("tr");
-        for (let j = 0; j < array[i].length; j++) {
-            // const cell = document.createElement("td");
-            row.textContent += array[i][j] + ',';
-            arrc.push(array[i][j])
-            // row.appendChild(cell);
-        }
 
-        row.setAttribute('id', arrc)
-        row.setAttribute('class', 'cope')
-        // row.setAttribute('onclick', send(event))
-        arrc = []
-        grid.appendChild(row);
-    }
-}
 function clickElementsWithClass(className) {
     let elements = document.querySelectorAll(`className`);
-    console.log(elements);
-    console.log(className);
     for (let i = 0; i < elements.length; i++) {
         let element = elements[i];
         element.click();
@@ -86,60 +227,29 @@ function clickElementsWithClass(className) {
 //     let elements = document.querySelectorAll(`.cope`);
 //     for (let i = 0; i < elements.length; i++) {
 //         let element = elements[i];
-//        setInterval(() => {
-//            element.click();
-//        }, 2000);
+//         //    setInterval(() => {
+//         // console.log(element);
+//         element.click();
+//         //    }, 2000);
 //     }
 // }, 3000);
-displayNewArrayInGridView(outerArray)
-document.querySelectorAll('.cope').forEach(el => {
-    // el.target.click()
-    el.addEventListener('click', (e) => {
-        console.log('sadf', gamearray.length);
-        if (!gamearray.includes(e.target.innerHTML) && gamearray.length != 19
-        ) {
-            gamearray.push(e.target.innerHTML)
-            const room = document.querySelector('.room').innerHTML;
-            const number = e.target.innerHTML;
-            console.log('message', { room, number });
-            // socket.emit('message', { room, number });
-            // e.target.style.color = 'Red'
-            e.target.style.color = 'green'
-            e.target.style.fontWeight = 'bold';
-
-            e.target.setAttribute('disabled', '')
-            return
-        } else {
-            if (gamearray.length == 19) {
-                winner()
-            }
-        }
-
-
-
-        e.target.style.color = 'green'
-        // e.target.style.display = 'none'
-        e.target.setAttribute('disabled', '')
-    })
-});
-
-
-
-
 
 //send and recive
-function sendMessage() {
-    const room = document.getElementById('room').value;
-    const message = document.getElementById('message').value;
+function sendMessage(links) {
+    // const room = document.getElementById('room').value;
+    const message = links;
     socket.emit('message', { room, message });
-}
 
-// socket.on('rooms', ({ user, message }) => {
-//     const messagesDiv = document.getElementById('messages');
-//     const newMessage = document.createElement('div');
-//     newMessage.textContent = `[${user}]:${message}`;
-//     messagesDiv.appendChild(newMessage);
-// });
+}
+// sendMessage();
+socket.on('message', ({ user, message }) => {
+    // console.log(mflessage, user);
+    //     const messagesDiv = document.getElementById('messages');
+    //     const newMessage = document.createElement('div');
+    //     newMessage.textContent = `[${user}]:${message}`;
+    //     messagesDiv.appendChild(newMessage);
+});
+
 
 
 // check if the user is in the store and signuin
@@ -147,38 +257,4 @@ function sendMessage() {
 
 // winner 
 // Choose a random row
-function winner() {
-
-    const randomRowIndex = Math.floor(Math.random() * gamearray.length);
-    const randomRow = gamearray[randomRowIndex];
-
-    // Choose a random column
-    const randomColumnIndex = Math.floor(Math.random() * randomRow.length);
-    const randomWinner = gamearray[randomColumnIndex];
-    let winneri = randomRow
-    // console.log("The random randomColumnIndex is:", randomColumnIndex);
-    console.log("The random winner is:", randomRow);
-    socket.emit('winner', winneri)
-    document.querySelector('.winner').innerHTML = winneri;
-    // document.getElementById('grid').innerHTML=`<tr id="${winneri}" class="cope">${winneri}</tr>`);
-    const trElement = document.createElement("tr");
-    trElement.id = winneri;
-    // trElement.classList.add("cope");
-    trElement.classList.add("cope");
-    trElement.innerHTML = winneri;
-
-    // Find the element with id "grid"
-    const gridElement = document.getElementById("grid");
-    gridElement.innerHTML = '';
-    // Append the <tr> element to the "grid" element
-    gridElement.appendChild(trElement);
-    console.log('winner', winneri)
-    // console.log("The random winner is:", randomWinner);
-    if (gamearray.length == gamearray.length) {
-        socket.emit('winner', winneri)
-        console.log('winner', winneri)
-    }
-    // console.log(gamearray);
-
-}
 // setInterval(winner, 1000);

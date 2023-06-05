@@ -3,8 +3,12 @@ const app = express();
 const server = require('http').createServer(app);
 const cors = require('cors');
 
+let url = 'http://localhost:8084/api';
+const axios = require('axios');
 
 
+
+let arries = {}
 
 
 // click send to back and saved 
@@ -12,26 +16,6 @@ const cors = require('cors');
 // on 20 winner announced 
 // game refreshed 
 // to desable 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 let outerArray = [];
@@ -54,28 +38,80 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
     io.emit('array', {
-        array:outerArray,
+        array: outerArray,
     });
     console.log('User connected:', socket.id);
 
     socket.on('join', (room) => {
         socket.join(room);
         console.log('User', socket.id, 'joined room:', room);
-        
+
     });
 
-    socket.on('winner', (winner) => {
+    socket.on('winner', ({ room, winner }) => {
         // socket.join(room);
+        arries[room] = []
         console.log('User', 'joined room:', winner);
     });
 
     socket.on('message', ({ room, message }) => {
+
         io.to(room).emit('message', {
             user: socket.id,
             message: message,
         });
-        console.log('Message from', socket.id, 'in room', room, ':', message);
+        // console.log('Message from', socket.id, 'in room', room, ':', message);
+        // room = []
+        if (!arries.hasOwnProperty(room)) {
+            // console.log('asdfsdaf');
+            arries[room] = []
+        }
+        let room_array = arries[room];
+        if (room_array.length <= 20) {
+            arries[room].push(message)
+        }
+        if (room_array.length == 20) {
+            const randomRowIndex = Math.floor(Math.random() * outerArray.length);
+            let game_winner = arries[room][randomRowIndex];
+            io.to(room).emit('winner', {
+                // user: socket.id,
+                game_winner: game_winner,
+
+            });
+
+            axios.post(url+'/save_winner', {
+                win: game_winner,
+                room: room,
+            })
+                .then(response => {
+                    // Handle the response data
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the request
+                    console.error(error);
+                });
+            console.log(game_winner);
+            arries[room] = []
+        }
+        io.to(room).emit('game_array', {
+            game_array: arries[room],
+        });
+
+
+        // console.log(arries[room]);
+        console.log('arries');
+        console.log(arries);
+
     });
+    socket.on('game_array', (room) => {
+        if (arries[room]) {
+            io.to(room).emit('game_array', {
+                game_array: arries[room],
+            });
+        }
+    });
+
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
