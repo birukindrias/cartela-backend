@@ -4,7 +4,7 @@
 <head>
     <!-- <link rel="stylesheet" href="./style.css" /> -->
 
-    <title>Login and Signup Page</title>
+    <title>Login</title>
     <style>
         /* CSS for the form */
         * {
@@ -14,9 +14,16 @@
             padding: 0;
         }
 
-        body {
-            background-color: #000;
+        .main {
+            width: 382px !important;
+        }
 
+        body {
+            /* background-color: #000; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
             /* background: black url('http://localhost:8084/assets/bigbg.jpg'); */
 
         }
@@ -26,7 +33,7 @@
             /* max-width: 100%; */
             margin: 0 auto;
             padding: 20px;
-            background-color: #000;
+            background: black url('http://localhost:8084/assets/bigbg.jpg');
             border: 1px solid #fff;
             border-radius: 10px;
             font-family: Arial, sans-serif;
@@ -62,10 +69,21 @@
             cursor: pointer;
         }
 
+        .aid {
+            color: yellow;
+            padding: 1px;
+            font-weight: bold;
+            background-color: black;
+        }
+
         /* CSS for the error message */
         .error-message {
             color: #f00;
             margin-bottom: 10px;
+        }
+
+        h2 {
+            color: yellow;
         }
 
         /* Media queries for responsive design */
@@ -88,37 +106,39 @@
 </head>
 
 <body>
-    <div class="bo"></div>
-    <div class="form-container" id="login-form">
-        <h2>Login</h2>
-        <input required type="text" placeholder="Username" id="login-username">
-        <input required type="password" placeholder="Password" id="login-password">
-        <button onclick="login()">Login</button>
-        <a href="#" id="dont-have-account">Don't have an account?</a>
+    <div class="main">
+        <div class="bo"></div>
+        <div class="form-container" id="login-form">
+            <h2>Login</h2>
+            <input required type="text" placeholder="Username" id="login-username">
+            <input required type="password" placeholder="Password" id="login-password">
+            <button onclick="login()">Login</button>
+            <a href="#" class="aid" id="dont-have-account">Don't have an account?</a>
 
-    </div>
+        </div>
 
-    <div class="form-container" id="signup-form" style="display: none;">
-        <h2>Signup</h2>
-        <input required type="text" placeholder="Username" id="signup-username">
-        <input required type="password" placeholder="Password" id="signup-password">
-        <input required type="password" placeholder="Confirm Password" id="signup-confirm-password">
-        <input required type="text" placeholder="Phone Number" id="signup-phone">
-        <button onclick="signup()">Signup</button>
-        <a href="#" id="already-have-account">Already have an account?</a>
+        <div class="form-container" id="signup-form" style="display: none;">
+            <h2>Signup</h2>
+            <input required type="text" placeholder="Username" id="signup-username">
+            <input required type="password" placeholder="Password" id="signup-password">
+            <input required type="password" placeholder="Confirm Password" id="signup-confirm-password">
+            <input required type="text" placeholder="Phone Number" id="signup-phone">
+            <button onclick="signup()">Signup</button>
+            <a href="#" class="aid" id="already-have-account">Already have an account?</a>
 
-    </div>
+        </div>
 
-    <div class="type" hidden>
-        <?php echo $_GET['type'] ?? 'user'
-        ?> </div>
-    <div class="profile">
-        <?php if ($_GET['type'] ?? 'user' != 'user') {
-            header('location: /listgames.php?&type=' . $_GET['type'] ?? 'user');
+        <div class="type" hidden>
+            <?php echo $_GET['type'] ?? 'user'
+            ?> </div>
+        <div class="profile">
+            <?php if ($_GET['type'] ?? 'user' != 'user') {
+                header('location: /listgames.php?&type=' . $_GET['type'] ?? 'user');
 
-            return;
-        }
-        ?>
+                return;
+            }
+            ?>
+        </div>
     </div>
     <script>
         // JavaScript code

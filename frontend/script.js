@@ -8,7 +8,7 @@ const type = document.querySelector('.type').innerHTML;
 let room = (rooms.trim() + type.trim()).trim();
 
 // numbers_array
-for (let i = 0; i <= 99; i += 5) {
+for (let i = 1; i <= 100; i += 5) {
     let innerArray = [];
     for (let j = i; j < i + 5; j++) {
         innerArray.push(j);
@@ -28,7 +28,7 @@ for (let i = 0; i <= 99; i += 5) {
     });
     // display array numbers
 
-    const grid = document.getElementById("grid");
+    const grid = document.getElementById("grid_listing");
     let new_array = []
     for (let i = 0; i < numbers_array.length; i++) {
         const row = document.createElement("tr");
@@ -48,15 +48,32 @@ for (let i = 0; i <= 99; i += 5) {
 })();
 socket.on('winner', ({ game_winner }) => {
     // alert ('asdfadf')
+    location.href = '/winner.php?type=' + type + '&game_winner=' + game_winner;
     var image = document.getElementById('myImage');
     document.getElementById('myImage').style.display = 'block'
         ;
     var rotationInterval = setInterval(function () {
         image.classList.toggle('rotate-image');
     }, 3000);
+    window.addEventListener('DOMContentLoaded', () => {
+        const h2Element = document.querySelector('#w_number h1');
 
+        function generateRandomNumber() {
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+            h2Element.innerText = randomNumber;
+        }
+        generateRandomNumber ()
+        // Update the number every 10 seconds
+        setInterval(generateRandomNumber, 1);
+    });
     // current_game_array = game_array
     setTimeout(function () {
+        clearInterval(generateRandomNumber);
+        //
+        //
+        //
+        //
+        //
         clearInterval(rotationInterval);
     }, 10000);
     setTimeout(function () {
@@ -64,6 +81,7 @@ socket.on('winner', ({ game_winner }) => {
         gridElement.innerHTML = '';
         const trElement = document.createElement("tr");
         const hide = document.querySelectorAll(".hide");
+        const w_name_number_ = document.querySelectorAll(".w_name_number_");
         trElement.id = game_winner;
         trElement.classList.add("cope");
         hide.forEach(e => {
@@ -71,6 +89,7 @@ socket.on('winner', ({ game_winner }) => {
 
         });
         trElement.innerHTML = game_winner;
+        w_name_number_.innerHTML = game_winner;
 
         console.log("The random winner is:", game_winner);
         current_game_array = []
@@ -215,13 +234,13 @@ setInterval(() => {
 
 
 
-function clickElementsWithClass(className) {
-    let elements = document.querySelectorAll(`className`);
-    for (let i = 0; i < elements.length; i++) {
-        let element = elements[i];
-        element.click();
-    }
-}
+// function clickElementsWithClass(className) {
+//     let elements = document.querySelectorAll(`className`);
+//     for (let i = 0; i < elements.length; i++) {
+//         let element = elements[i];
+//         element.click();
+//     }
+// }
 
 // setTimeout(() => {
 //     let elements = document.querySelectorAll(`.cope`);

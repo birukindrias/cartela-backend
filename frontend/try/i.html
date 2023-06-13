@@ -1,0 +1,231 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+input {
+  width: 200px;
+}
+
+body {
+  width: 100%;
+  background-image: url("https://img.freepik.com/free-photo/abstract-luxury-gradient-blue-background-smooth-dark-blue-with-black-vignette-studio-banner_1258-52393.jpg?w=900&t=st=1686122789~exp=1686123389~hmac=251885b85df9ddbcb5063982d35be054bc4f28bd12dcb923a0e7cca4e2260ea8");
+  background-size: cover;
+}
+.room-number a {
+  z-index: 5;
+  color: black !important;
+  border: 1px solid rgb(255, 255, 255);
+  background-color: white;
+  padding: 5rem;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  height: 100vh;
+
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.main {
+  width: 382px;
+}
+.maing {
+  height: 100vh;
+  width: 100%;
+}
+
+.gridi-containerip {
+  display: grid;
+  /* margin-top: 5rem; */
+  transform: translateX(50%, -50%);
+  grid-template-columns: repeat(2, 1fr);
+  /* gap: 10px; */
+  padding-top: 3rem;
+  padding-bottom: 8.5rem;
+  height: 78.8vh;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  background-image: url("/assets/box.jpg");
+}
+
+a {
+  color: #ffffff !important;
+  font-weight: bold;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.room-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  width: 12rem;
+  height: 18rem;
+  padding: 15rem;
+
+  /* background-color: #000000; */
+  /* color: #000000 !important; */
+  background: url("http://localhost:8084/assets/box.jpg");
+  filter: blur(1px);
+
+  /* background-image: url('http://localhost:8084/assets/box.jpg'); */
+
+  /* border-radius: 50%; */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.room-number:hover {
+  color: yellow;
+  background-color: #b3b3b3;
+}
+#myImage {
+  display: none;
+}
+.room-number a {
+  text-decoration: none;
+}
+
+/*  */
+#grid {
+  height: fit-content;
+  width: 100%;
+  height: 100vh;
+  margin-left: 8rem;
+  display: grid;
+  /* background-image: url('http://localhost:8084/assets/box.jpg'); */
+  grid-template-columns: repeat(2, minmax(5rem, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(5rem, 1fr));
+  /* display: flex;
+  flex-direction: column; */
+  /* align-items: center;
+  justify-content: center; */
+  /* padding: 0.1rem; */
+  text-align: center;
+  /* flex-wrap: wrap;
+  object-fit: fill; */
+
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#grid > * {
+  transform: translateX(50deg) !important;
+}
+
+@keyframes rotate-image {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+
+.rotate-image {
+  animation: rotate-image 2s linear infinite;
+}
+
+.center {
+  margin-top: 10rem;
+  background-color: goldenrod;
+  color: red;
+  font-weight: bold;
+  font-size: xx-large;
+  /* width: 0; */
+  /* background-color: black; */
+  color: red;
+  /* padding: 10px 20px; */
+  border: none;
+  padding: 0.2rem;
+  width: fit-content;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  height: fit-content;
+  cursor: pointer;
+}
+#logoutButton {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+.profile {
+  width: 100%;
+  margin-top: 12vh;
+  /* margin-bottom: -2rem; */
+  position: relative;
+  height: 100vh;
+  padding: 1rem;
+  height: fit-content;
+  background: #000;
+  color: white;
+  display: flex;
+
+  flex-direction: row;
+  justify-content: space-around;
+}
+.full- {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  height: 20vh;
+}
+.hiddens {
+  display: none !important;
+}
+.cope {
+  background-color: black;
+  color: red;
+  /* padding: 10px 20px; */
+  border: none;
+  transform: translateXp(35deg);
+  padding: 0.2rem;
+  width: fit-content;
+  border-radius: 5px;
+
+  color: black;
+  background-color: yellow;
+  font-weight: bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  box-shadow: 0 0 30px yellow, 0 0 40px yellow, 0 0 100px black, 0 0 150px black;
+  /* text-shadow: 0 0 10px blue,
+               0 0 20px blue,
+               0 0 30px blue,
+               0 0 40px blue,
+               0 0 70px blue,
+               0 0 80px blue,
+               0 0 100px blue,
+               0 0 150px blue; */
+
+  font-size: 1.5rem;
+  height: fit-content;
+  cursor: pointer;
+
+  /* transition: 5s all; */
+}
+
+.cope:hover {
+  background-color: goldenrod;
+  color: red;
+  font-weight: bold;
+  /* font-size: xx-large; */
+  transform: scale(1, 1.2);
+}
+
+.cope {
+  font-size: 1.5rem;
+  /* margin-top: 20px; */
+}
