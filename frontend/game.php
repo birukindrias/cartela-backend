@@ -12,6 +12,8 @@
 </head>
 
 <body>
+    <div class="total_user">
+</div>
     <div class="game_container">
         <!-- <img src="./assets/box.png" id='myImage' class="rotate-image rt" alt="Rotated Image"> -->
         <div class="game_items">

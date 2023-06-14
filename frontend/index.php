@@ -212,7 +212,7 @@
                 .then(data => {
                     // Handle the response from the API
                     console.log(data.id);
-                    sessionStorage.setItem('id', data.id)
+                    sessionStorage.setItem('id', data)
 
 
 

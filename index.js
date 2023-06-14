@@ -9,6 +9,7 @@ const axios = require('axios');
 
 
 let arries = {}
+let total_user ={}
 
 
 // click send to back and saved 
@@ -43,6 +44,20 @@ io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('join', (room) => {
+        if (!total_user.hasOwnProperty(room)) {
+            // console.log('asdfsdaf');
+            arries[room] = []
+        }else{
+        let total_room_array = arries[room];
+
+        }
+        if (total_room_array.length <= 20) {
+            total_user[room].push(socket.id)
+        }
+        total_user[room].push(socket.id)
+        io.to(room).emit('total_users', {
+            total_users:total_user.length,
+        });
         socket.join(room);
         console.log('User', socket.id, 'joined room:', room);
 
@@ -59,6 +74,7 @@ io.on('connection', (socket) => {
         io.to(room).emit('message', {
             user: socket.id,
             message: message,
+            total_users: total_user.length,
         });
         // console.log('Message from', socket.id, 'in room', room, ':', message);
         // room = []

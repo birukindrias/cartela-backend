@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function generateRandomNumber() {
         const randomNumber = Math.floor(Math.random() * 100) + 1;
-        h2Element.innerText = randomNumber;
+        h2Element.innerText = sessionStorage.getItem ('id').name;
     }
     // generateRandomNumber()
     // Update the number every 10 seconds
