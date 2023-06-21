@@ -3,13 +3,11 @@ const app = express();
 const server = require('http').createServer(app);
 const cors = require('cors');
 
-let url = 'http://localhost:8084/api';
+let url = 'http://localhost:8086/api';
 const axios = require('axios');
 
-
-
 let arries = {}
-let total_user ={}
+let total_user = {}
 
 
 // click send to back and saved 
@@ -42,39 +40,54 @@ io.on('connection', (socket) => {
         array: outerArray,
     });
     console.log('User connected:', socket.id);
+    let total_room_array = {}
+    socket.on('join', ({ room, user_id }) => {
+        console.log('User', socket.id, 'joined room:', room);
 
-    socket.on('join', (room) => {
         if (!total_user.hasOwnProperty(room)) {
             // console.log('asdfsdaf');
+            // total_room_array.push(arraies[room])
             arries[room] = []
-        }else{
-        let total_room_array = arries[room];
+            total_user[room] = []
+            if (!total_user[room].hasOwnProperty(user_id)) {
+                total_user[room].push(user_id)
 
+            }
+            // total_user.room.push(socket.id)
+
+        } else {
+            if (!total_user[room].hasOwnProperty(user_id)) {
+                total_user[room].push(user_id)
+
+            }
         }
-        if (total_room_array.length <= 20) {
-            total_user[room].push(socket.id)
-        }
-        total_user[room].push(socket.id)
+        // console.log(total_user);
+        // console.log('total_user');
+        // console.log(total_user[room]);
+        // if (total_room_array.length <= 20) {
+        //     total_user[room].push(socket.id)
+        // }
+        // total_user[room].push(socket.id)
         io.to(room).emit('total_users', {
-            total_users:total_user.length,
+            total_users: total_user[room].length ?? 0,
         });
         socket.join(room);
-        console.log('User', socket.id, 'joined room:', room);
 
     });
 
-    socket.on('winner', ({ room, winner }) => {
+    socket.on('winner', ({ room, winner, user_uid }) => {
         // socket.join(room);
         arries[room] = []
+        
         console.log('User', 'joined room:', winner);
     });
 
-    socket.on('message', ({ room, message }) => {
-
+    socket.on('message', ({ room, message, user_uid }) => {
+        console.log(total_user);
         io.to(room).emit('message', {
             user: socket.id,
             message: message,
-            total_users: total_user.length,
+            total_users: total_user[room].length ?? 0,
         });
         // console.log('Message from', socket.id, 'in room', room, ':', message);
         // room = []
@@ -85,23 +98,39 @@ io.on('connection', (socket) => {
         let room_array = arries[room];
         if (room_array.length <= 20) {
             arries[room].push(message)
+            // total_user[room][socket.id]=[]
+            // total_user[room][socket.id].push(message)
+            // console.log(total_user[room]);
+
         }
         if (room_array.length == 20) {
             const randomRowIndex = Math.floor(Math.random() * outerArray.length);
             let game_winner = arries[room][randomRowIndex];
-            io.to(room).emit('winner', {
-                // user: socket.id,
-                game_winner: game_winner,
+            console.log(game_winner);  
+            let game_number_new = game_winner.split(",");
 
-            });
+            let randomIndex = Math.floor(Math.random() * game_number_new.length);
+            let randomNum = game_number_new[randomIndex];
+          
+            console.log(randomNum);
 
-            axios.post(url+'/save_winner', {
-                win: game_winner,
+            axios.post(url + '/save_winner', {
+                win: randomNum,
                 room: room,
+                user_uid: user_uid,
             })
                 .then(response => {
                     // Handle the response data
-                    console.log(response.data);
+                    console.log(response.data.pr_win);
+                    io.to(room).emit('winner', {
+                        // user: socket.id,
+                        game_winner: randomNum,
+                        pr_win: response.data.pr_win,
+
+                        winn_winner: user_uid,
+
+                    });
+                
                 })
                 .catch(error => {
                     // Handle any errors that occurred during the request

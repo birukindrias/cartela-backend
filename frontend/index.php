@@ -133,7 +133,7 @@
             ?> </div>
         <div class="profile">
             <?php if ($_GET['type'] ?? 'user' != 'user') {
-                header('location: /listgames.php?&type=' . $_GET['type'] ?? 'user');
+                header('location: /game/listgames.php?&type=' . $_GET['type'] ?? 'user');
 
                 return;
             }
@@ -186,10 +186,9 @@
             // document.querySelector('.loginin').onclick = (e => {
             // Get the form values
             // e.preventDefault();
-            sessionStorage.setItem('id', '5')
-            location.href = '/listgames.php?type=user'
-            return
-            const signupUrl = 'http://localhost:8084/api/register'; // Replace with your actual API endpoint
+            // location.href = '/listgames.php?type=user'
+            // return
+            const signupUrl = 'http://localhost:8086/api/register'; // Replace with your actual API endpoint
 
             const signupData = {
                 'type': 'user',
@@ -212,9 +211,11 @@
                 .then(data => {
                     // Handle the response from the API
                     console.log(data.id);
-                    sessionStorage.setItem('id', data)
+                    sessionStorage.setItem('id', data.id)
+                    // sessionStorage.setItem('data', data.id)
 
-
+                    location.href = `/game/listgames.php?type=user&id=${data.id}`
+                    return
 
                 })
                 .catch(error => {
@@ -234,7 +235,7 @@
                 // Add the 'grid-containerip' class to the body element
                 document.body.classList.add('grid-containerip');
             } else {
-                location.href = '/listgames.php?type=user'
+                // location.href = '/listgames.php?type=user'
             }
         }
 
@@ -256,7 +257,9 @@
             // document.querySelector('.loginin').onclick = (e => {
             // Get the form values
             // e.preventDefault();
-            const signupUrl = 'http://localhost:8084/api/login'; // Replace with your actual API endpoint
+            location.href = `/game/listgames.php?type=user&id=${11}`
+return;
+            const signupUrl = 'http://localhost:8086/api/login'; // Replace with your actual API endpoint
 
             const signupData = {
                 'type': 'user',
@@ -279,6 +282,8 @@
                 .then(data => {
                     // Handle the response from the API
                     console.log(data);
+                    location.href = `/game/listgames.php?type=user&id=${data.id}`
+
                 })
                 .catch(error => {
                     // Handle any errors that occurred during the fetch request

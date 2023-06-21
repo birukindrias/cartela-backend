@@ -5,8 +5,9 @@ let foundElement = null;
 let current_game_array = [];
 const rooms = document.querySelector(".room").innerHTML;
 const type = document.querySelector(".type").innerHTML;
-let room = (rooms.trim() + type.trim()).trim();
-
+let room = (rooms.trim() +'|'+ type.trim()).trim();
+let user_id = sessionStorage.getItem('id');
+console.log(user_id);
 // numbers_array
 for (let i = 1; i <= 100; i += 5) {
   let innerArray = [];
@@ -17,9 +18,10 @@ for (let i = 1; i <= 100; i += 5) {
 }
 
 // join socket
-
+console.log(room);
 (() => {
-  socket.emit("join", room);
+
+  socket.emit("join", { room, user_id });
   socket.emit("game_array", room);
   socket.on("game_array", ({ game_array }) => {
     current_game_array = game_array;
@@ -27,77 +29,52 @@ for (let i = 1; i <= 100; i += 5) {
   });
   // display array numbers
 
-  const grid = document.getElementById("grid_listing");
+  const grid = document.querySelector(".btn-div");
   let new_array = [];
   for (let i = 0; i < numbers_array.length; i++) {
-    const row = document.createElement("tr");
+    const row = document.createElement("button");
+    const span = document.createElement("span");
     for (let j = 0; j < numbers_array[i].length; j++) {
-      row.textContent += numbers_array[i][j] + ",";
+      span.textContent += numbers_array[i][j] + ",";
       new_array.push(numbers_array[i][j]);
     }
 
     row.setAttribute("id", new_array);
     row.setAttribute("style", "transform: rotate(20deg)");
-    row.setAttribute("class", "cope  hide");
+    row.setAttribute("class", "cope  btn");
     // row.setAttribute('class', '')
 
     new_array = [];
+    row.appendChild(span);
     grid.appendChild(row);
   }
 })();
-socket.on("winner", ({ game_winner }) => {
-  // alert ('asdfadf')
-  location.href = "/winner.php?type=" + type + "&game_winner=" + game_winner;
-  var image = document.getElementById("myImage");
-  document.getElementById("myImage").style.display = "block";
-  var rotationInterval = setInterval(function () {
-    image.classList.toggle("rotate-image");
+socket.on("winner", ({ game_winner, pr_win, winn_winner }) => {
+  location.href = "/game/winner.php?type=" + type + "&winn_winner" + winn_winner +"&win=" + game_winner + "&pr_win=" + pr_win;
+
+  let image = document.getElementById("myImage_winner");
+  
+  let rotationInterval = setInterval(function () {
+    image.classList.add("rotate-image");
   }, 3000);
-  window.addEventListener("DOMContentLoaded", () => {
-    const h2Element = document.querySelector("#w_number h1");
+  rotationInterval
+  // const h2Element = document.querySelector("h33");
 
-    function generateRandomNumber() {
-      const randomNumber = Math.floor(Math.random() * 100) + 1;
-      h2Element.innerText = randomNumber;
-    }
-    generateRandomNumber();
-    // Update the number every 10 seconds
-    setInterval(generateRandomNumber, 1);
-  });
-  // current_game_array = game_array
-  setTimeout(function () {
-    clearInterval(generateRandomNumber);
-    //
-    //
-    //
-    //
-    //
-    clearInterval(rotationInterval);
-  }, 10000);
-  setTimeout(function () {
-    const gridElement = document.getElementById("grid");
-    gridElement.innerHTML = "";
-    const trElement = document.createElement("tr");
-    const hide = document.querySelectorAll(".hide");
-    const w_name_number_ = document.querySelectorAll(".w_name_number_");
-    trElement.id = game_winner;
-    trElement.classList.add("cope");
-    hide.forEach((e) => {
-      e.classList.add("hiddens");
-    });
-    trElement.innerHTML = game_winner;
-    w_name_number_.innerHTML = game_winner;
+  // function generateRandomNumber() {
+  //   let randomNumber = Math.floor(Math.random() * 100) + 1;
+  //   console.log(randomNumber);
+  //   if (randomNumber) {
 
-    console.log("The random winner is:", game_winner);
-    current_game_array = [];
-    console.log("current_game_array");
-    gridElement.appendChild(trElement);
-    console.log(game_winner);
-  }, 10000);
-
-  // console.log(current_game_array);
-
-  // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
+  //     h2Element.innerHTML = randomNumber;
+  //   }
+  // }
+  // generateRandomNumber();
+  // // Update the number every 10 seconds
+  // setInterval(generateRandomNumber, 1);
+  // setTimeout(function () {
+  //   clearInterval(generateRandomNumber);
+  //   image.classList.remove("rotate-image");
+  // }, 10000);
 });
 
 socket.on("game_winner", ({ game_winner }) => {
@@ -139,13 +116,14 @@ setInterval(() => {
 document.querySelectorAll(".cope").forEach((el) => {
   if (current_game_array.length != numbers_array.length) {
     el.addEventListener("click", (e) => {
-      if (!current_game_array.includes(e.target.innerHTML)) {
-        current_game_array.push(e.target.innerHTML);
+      if (!current_game_array.includes(e.target.querySelector("span").innerHTML)) {
+        current_game_array.push(e.target.querySelector("span").innerHTML);
         // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
-        sendMessage(e.target.innerHTML);
-        const number = e.target.innerHTML;
+        sendMessage(e.target.querySelector("span").innerHTML);
+        const number = e.target.querySelector("span").innerHTML;
         e.target.style.color = "brown";
         e.target.style.backgroundColor = "blue";
+        e.target.style.padding = "1rem";
         e.target.style.fontWeight = "light";
         e.target.setAttribute("disabled", "");
         // console.log(current_game_array.length);
@@ -183,7 +161,7 @@ function winner() {
 
     // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
     gridElement.appendChild(trElement);
-    socket.emit("winner", { room, winner: game_winner });
+    socket.emit("winner", { room, winner: game_winner,user_uid: user_id });
 
     // location.href = '/listgames.php'
     // console.log('winner', game_winner)
@@ -223,26 +201,34 @@ setInterval(() => {
 // }
 
 // setTimeout(() => {
-//     let elements = document.querySelectorAll(`.cope`);
-//     for (let i = 0; i < elements.length; i++) {
-//         let element = elements[i];
-//         //    setInterval(() => {
-//         // console.log(element);
-//         element.click();
-//         //    }, 2000);
-//     }
+//   let elements = document.querySelectorAll(`.cope`);
+//   for (let i = 0; i < elements.length; i++) {
+//     let element = elements[i];
+//     //    setInterval(() => {
+//     // console.log(element);
+//     element.click();
+//     //    }, 2000);
+//   }
 // }, 3000);
 
 //send and recive
 function sendMessage(links) {
   // const room = document.getElementById('room').value;
   const message = links;
-  socket.emit("message", { room, message });
+  socket.emit("message", { room, message, user_uid: user_id });
 }
 // sendMessage();
 socket.on("message", ({ user, message, total_users }) => {
   document.querySelector(".total_user").innerHTML = total_users;
   // console.log(mflessage, user);
+  //     const messagesDiv = document.getElementById('messages');
+  //     const newMessage = document.createElement('div');
+  //     newMessage.textContent = `[${user}]:${message}`;
+  //     messagesDiv.appendChild(newMessage);
+});
+socket.on("total_user", ({ total_users }) => {
+  // document.querySelector(".total_user").innerHTML = total_users;
+  console.log(total_users);
   //     const messagesDiv = document.getElementById('messages');
   //     const newMessage = document.createElement('div');
   //     newMessage.textContent = `[${user}]:${message}`;
