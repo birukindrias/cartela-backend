@@ -13,21 +13,29 @@
     <script defer src="../script/winner.js"></script>
     <!-- <script defer src="../script/script.js"></script> -->
 
-    <link rel="stylesheet" href="../assets/index.css" />
+    <link rel="stylesheet" href="../assets/sindex.css" />
 
 </head>
 
-<body>
+<body class="  winning-section">
     <div class="container">
         <div class="img-number-container">
             <!-- <img src="./fredrick-tendong-6ou8gWpS9ns-unsplash.jpg" alt="image" /> -->
-            <img src="/assets/box.png" id='myImage_winner' />
+            <img src="/assets/box.png" id='myImage_winner'></img>
 
-            <h33 font-size="3.5rem !important">30</h33>
+            <h22>
+                <h33 font-size="3.5rem !important">30</h33>
+
+            </h22>
         </div>
 
         <div class="texts">
-            <h36 font-size="3.5rem !important">the winner is</h36>
+            <div class="flcol">
+                <h355 font-size="3.5rem !important">
+                    <h2>The winner</h2>
+                </h355>
+                <h36 font-size="3.5rem !important"></h36>
+            </div>
             <h2>previous winners</h2>
         </div>
 
@@ -52,6 +60,9 @@
     <div class="winner" hidden>
         <?php echo $_GET['win']; ?>
     </div>
+    <h0 class="winner" hidden>
+        <?php echo $_GET['win']; ?>
+    </h0>
     <div class="pr_winner" hidden>
         <?php echo $_GET['pr_win']; ?>
     </div>

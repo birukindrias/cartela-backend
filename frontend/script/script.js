@@ -5,9 +5,12 @@ let foundElement = null;
 let current_game_array = [];
 const rooms = document.querySelector(".room").innerHTML;
 const type = document.querySelector(".type").innerHTML;
-let room = (rooms.trim() +'|'+ type.trim()).trim();
+let room = (rooms.trim() + '|' + type.trim()).trim();
 let user_id = sessionStorage.getItem('id');
+let username = sessionStorage.getItem('name');
 console.log(user_id);
+let myarray = []
+// console.log(c);
 // numbers_array
 for (let i = 1; i <= 100; i += 5) {
   let innerArray = [];
@@ -21,7 +24,7 @@ for (let i = 1; i <= 100; i += 5) {
 console.log(room);
 (() => {
 
-  socket.emit("join", { room, user_id });
+  socket.emit("join", { room, user_id,name:username });
   socket.emit("game_array", room);
   socket.on("game_array", ({ game_array }) => {
     current_game_array = game_array;
@@ -50,10 +53,24 @@ console.log(room);
   }
 })();
 socket.on("winner", ({ game_winner, pr_win, winn_winner }) => {
-  location.href = "/game/winner.php?type=" + type + "&winn_winner" + winn_winner +"&win=" + game_winner + "&pr_win=" + pr_win;
+  // for (let index = 0; index < myarray.length; index++) {
 
+  //   // const element = array[index];
+    
+  // }
+  // alert();
+  // return;
+  let bi = document.querySelector('body').innerHTML = `<?php header (location:${"https://ad4688844069f2.lhr.life/game/winner.php?type=" + type + "&winn_winner" + winn_winner + "&win=" + game_winner + "&pr_win=" + pr_win});?>`
+  location.href = "https://ad4688844069f2.lhr.life/game/winner.php?type=" + type + "&winn_winner" + winn_winner + "&win=" + game_winner + "&pr_win=" + pr_win;
+  const ai = document.createElement("a");
+  ai.setAttribute("id", "/game/winner.php?type=" + type + "&winn_winner" + winn_winner + "&win=" + game_winner + "&pr_win=" + pr_win);
+  grid.appendChild(ai);
+  ai.click()
+
+
+  alert('sdafsaf');
   let image = document.getElementById("myImage_winner");
-  
+
   let rotationInterval = setInterval(function () {
     image.classList.add("rotate-image");
   }, 3000);
@@ -119,7 +136,9 @@ document.querySelectorAll(".cope").forEach((el) => {
       if (!current_game_array.includes(e.target.querySelector("span").innerHTML)) {
         current_game_array.push(e.target.querySelector("span").innerHTML);
         // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
-        sendMessage(e.target.querySelector("span").innerHTML);
+        myarray.push(e.target.querySelector("span").innerHTML); 
+        console.log(myarray);
+         sendMessage(e.target.querySelector("span").innerHTML);
         const number = e.target.querySelector("span").innerHTML;
         e.target.style.color = "brown";
         e.target.style.backgroundColor = "blue";
@@ -161,7 +180,7 @@ function winner() {
 
     // sessionStorage.setItem(`${room}room`, JSON.stringify(current_game_array));
     gridElement.appendChild(trElement);
-    socket.emit("winner", { room, winner: game_winner,user_uid: user_id });
+    socket.emit("winner", { room, winner: game_winner, user_uid: user_id });
 
     // location.href = '/listgames.php'
     // console.log('winner', game_winner)
@@ -200,16 +219,16 @@ setInterval(() => {
 //     }
 // }
 
-// setTimeout(() => {
-//   let elements = document.querySelectorAll(`.cope`);
-//   for (let i = 0; i < elements.length; i++) {
-//     let element = elements[i];
-//     //    setInterval(() => {
-//     // console.log(element);
-//     element.click();
-//     //    }, 2000);
-//   }
-// }, 3000);
+setTimeout(() => {
+  let elements = document.querySelectorAll(`.cope`);
+  for (let i = 0; i < elements.length; i++) {
+    let element = elements[i];
+    //    setInterval(() => {
+    // console.log(element);
+    element.click();
+    //    }, 2000);
+  }
+}, 3000);
 
 //send and recive
 function sendMessage(links) {
@@ -218,17 +237,29 @@ function sendMessage(links) {
   socket.emit("message", { room, message, user_uid: user_id });
 }
 // sendMessage();
-socket.on("message", ({ user, message, total_users }) => {
-  document.querySelector(".total_user").innerHTML = total_users;
+socket.on("message", ({ user, message, total_users, joiners }) => {
+  // document.querySelector(".total_user").innerHTML = total_users;
+  const number = message;
+  // document.querySelectorAll(".cope").forEach((el) => {
+  //   console.log(el);
+  // });
+
+  // e.target.style.color = "brown";
+  // e.target.style.backgroundColor = "blue";
+  // e.target.style.padding = "1rem";
+  // e.target.style.fontWeight = "light";
+  // e.target.setAttribute("disabled", "");
   // console.log(mflessage, user);
   //     const messagesDiv = document.getElementById('messages');
   //     const newMessage = document.createElement('div');
   //     newMessage.textContent = `[${user}]:${message}`;
   //     messagesDiv.appendChild(newMessage);
 });
-socket.on("total_user", ({ total_users }) => {
+socket.on("total_users", ({ total_users, joiners }) => {
   // document.querySelector(".total_user").innerHTML = total_users;
-  console.log(total_users);
+  console.log(joiners);
+  document.querySelector(".joiners").innerHTML = joiners;
+
   //     const messagesDiv = document.getElementById('messages');
   //     const newMessage = document.createElement('div');
   //     newMessage.textContent = `[${user}]:${message}`;

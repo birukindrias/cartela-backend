@@ -13,13 +13,22 @@
 </head>
 
 <body>
-      <div class="top_item">
+    <div class="top_item">
 
     </div>
-    <div class="total_user">
-</div>
- <div class="btn-div">
-</div>
+
+
+    <div class="header">
+        <h2>
+            <div class="joiners">
+
+            </div>
+        
+        </h2>
+    </div>
+
+    <div class="btn-div">
+    </div>
 
     <div class="game_container">
         <!-- <img src="./assets/box.png" id='myImage' class="rotate-image rt" alt="Rotated Image"> -->
@@ -32,9 +41,9 @@
 
         </div>
     </div>
-     
+
     <div class="room" hidden><?= $_GET['room'] ?></div>
-  <div class="bot_item">
+    <div class="bot_item">
 
     </div>
     <div class="type" hidden>
@@ -51,8 +60,8 @@
             include_once './i.php'; ?>
         </div>
     </div>
-     
-    
+
+
 </body>
 
 </html>

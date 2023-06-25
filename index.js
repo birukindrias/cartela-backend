@@ -41,8 +41,9 @@ io.on('connection', (socket) => {
     });
     console.log('User connected:', socket.id);
     let total_room_array = {}
-    socket.on('join', ({ room, user_id }) => {
+    socket.on('join', ({ room, user_id,name }) => {
         console.log('User', socket.id, 'joined room:', room);
+        console.log('User', socket.id, 'joined room:', name);
 
         if (!total_user.hasOwnProperty(room)) {
             // console.log('asdfsdaf');
@@ -69,6 +70,10 @@ io.on('connection', (socket) => {
         // }
         // total_user[room].push(socket.id)
         io.to(room).emit('total_users', {
+            total_users: total_user[room].length ?? 0,
+            joiners: '  ' + name + ' joined the room'
+        });
+        io.to(room).emit('joined_usr', {
             total_users: total_user[room].length ?? 0,
         });
         socket.join(room);
@@ -125,6 +130,7 @@ io.on('connection', (socket) => {
                     io.to(room).emit('winner', {
                         // user: socket.id,
                         game_winner: randomNum,
+                        // game_winner: randomNum,
                         pr_win: response.data.pr_win,
 
                         winn_winner: user_uid,

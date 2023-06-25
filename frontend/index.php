@@ -212,6 +212,9 @@
                     // Handle the response from the API
                     console.log(data.id);
                     sessionStorage.setItem('id', data.id)
+                    sessionStorage.setItem('name', data.username)
+                    console.log(data);
+                    // return
                     // sessionStorage.setItem('data', data.id)
 
                     location.href = `/game/listgames.php?type=user&id=${data.id}`
@@ -258,7 +261,7 @@
             // Get the form values
             // e.preventDefault();
             location.href = `/game/listgames.php?type=user&id=${11}`
-return;
+            return;
             const signupUrl = 'http://localhost:8086/api/login'; // Replace with your actual API endpoint
 
             const signupData = {

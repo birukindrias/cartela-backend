@@ -11,6 +11,8 @@ const h2Element = document.querySelector('h33');
 // alert('asdf')
 // alert(h2Element)
 console.log(h2Element)
+const winningSection = document.querySelector('.winning-section');
+winningSection.classList.add('winner');
 
 function generateRandomNumber() {
     const randomNumber = Math.floor(Math.random() * 100) + 1;
@@ -39,23 +41,47 @@ setTimeout(function () {
     image.classList.remove("img");
 
     clearInterval(rotationInterval);
-    let win = document.querySelector(".winner").innerHTML;
+    let win = document.querySelector("h0").innerText;
     let h36 = document.querySelector(".winner_now").innerHTML;
     let h3 = document.querySelector("h36");
-    let h33 = document.querySelector("h33");
+    let h33 = document.querySelector("h22");
+    let h355 = document.querySelector("h22");
     // let numbersArray = win.split(",");
     // let randomIndex = Math.floor(Math.random() * numbersArray.length);
     // let randomNum = numbersArray[randomIndex];
     h3.innerHTML = win;
+    h355.innerHTML = win
+    console.log(h355);
     // const h2Element = document.querySelector('h33');
     h2Element.innerHTML = win
+    console.log(win);
+    console.log(h33);
+    h33.textContent = 'asdfsdafjdsaklfjksadlfj'
+    h33.innerHTML = win
+    h33.innerHTML = win
+    h33.innerHTML = win
+    h33.innerHTML = win
     console.log("The random winner is:", win);
     console.log('current_game_array');
     console.log(win);
+    h33.innerHTML = win
+    h33.innerHTML = win
+    h355.innerHTML = win
+    h355.innerText = win
+    console.log(h355);
+
+
 }, 10000);
 
 
+setInterval(() => {
+    let win = document.querySelector(".winner").innerHTML;
 
+    let h33 = document.querySelector("h22");
+
+    h33.innerHTML = win
+
+}, 10000);
 //  var image = document.getElementById("myImage");
 //   var rotationInterval = setInterval(function () {
 //     image.classList.toggle("rotate-image");
